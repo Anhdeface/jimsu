@@ -1,0 +1,177 @@
+html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      background: linear-gradient(120deg, #b6e0fe 0%, #fbc2eb 100%);
+      transition: background 1.5s;
+    }
+    .music-bg-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 60%),
+                  radial-gradient(circle at 20% 80%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%);
+      opacity: 0.85;
+    }
+    .home-content {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #2d2d2d;
+      text-shadow: 0 2px 8px rgba(255,255,255,0.2);
+    }
+    .home-title {
+      font-size: 3rem;
+      font-weight: 600;
+      margin-bottom: 0.5em;
+      letter-spacing: 2px;
+    }
+    .home-desc {
+      font-size: 1.3rem;
+      font-weight: 400;
+      opacity: 0.8;
+      margin-bottom: 2em;
+    }
+    .home-btn {
+      padding: 12px 32px;
+      border: none;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.7);
+      color: #2d2d2d;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+      transition: background 0.2s;
+    }
+    .home-btn:hover {
+      background: rgba(255,255,255,0.9);
+    }
+    /* Navbar custom */
+    .navbar {
+      background: rgba(255,255,255,0.65) !important;
+      box-shadow: 0 4px 24px 0 rgba(120,120,180,0.07);
+      backdrop-filter: blur(8px);
+      transition: background 0.5s, box-shadow 0.5s;
+      border-bottom: 1px solid rgba(200,200,255,0.13);
+    }
+    .navbar-brand {
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: #5a5a8a !important;
+      font-size: 1.35rem;
+      transition: color 0.3s;
+    }
+    .navbar-nav .nav-link {
+      color: #4d4d6b !important;
+      font-size: 1.08rem;
+      font-weight: 500;
+      margin-right: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      border-radius: 18px;
+      padding: 8px 16px;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+      background: linear-gradient(90deg, #b6e0fe 0%, #fbc2eb 100%);
+      color: #2d2d2d !important;
+      transform: translateY(-2px) scale(1.06);
+      box-shadow: 0 2px 8px 0 rgba(180,180,255,0.08);
+    }
+    .navbar-nav .nav-link .bi {
+      font-size: 1.2em;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .navbar-nav .nav-link:hover .bi, .navbar-nav .nav-link.active .bi {
+      color: #ff7eb3;
+      transform: scale(1.18) rotate(-8deg);
+    }
+    @media (max-width: 991px) {
+      .navbar-nav .nav-link {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+      }
+    }
+    .song-link {
+      display: block;
+      height: 100%;
+      color: inherit;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .song-link:hover .song-card, .song-link:focus .song-card {
+      box-shadow: 0 4px 24px 0 rgba(120,120,180,0.18);
+      transform: translateY(-2px) scale(1.03);
+      border-color: #b6e0fe;
+    }
+    .song-card {
+      min-height: 100px; /* tăng nhẹ cho đầy đặn */
+      padding: 14px 12px; /* tăng padding ngang */
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      transition: box-shadow 0.2s, border-color 0.2s;
+      gap: 10px;
+      display: flex;
+      align-items: center;
+    }
+    .song-img {
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .song-title,
+    .song-author,
+    .song-poster {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
+    .song-info > div {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-height: 1.2em;
+      box-sizing: border-box;
+    }
+    @media (max-width: 575.98px) {
+      .song-card {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px 8px;
+        min-height: 120px;
+        gap: 8px;
+      }
+      .song-img {
+        width: 54px;
+        height: 54px;
+        margin: 0 auto 7px auto;
+        display: block;
+      }
+      .song-info {
+        padding: 0 2px;
+      }
+      .song-info > div,
+      .song-title {
+        width: 100%;
+        max-width: 100%;
+        font-size: 1rem;
+      }
+    }

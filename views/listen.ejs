@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jimsu - Listen</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+  <!-- Animate.css for animation -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="/styles_listen.css">
+</head>
+<body>
+    <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="/"><i class="bi bi-music-note-beamed"></i> Jimsu</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <!-- nav-link active la trang hiện tại -->
+             <!-- nav-link la trang khac -->
+            <a class="nav-link" aria-current="page" href="/">
+              <i class="bi bi-house-door"></i> Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/account">
+              <i class="bi bi-person-circle"></i> Tài khoản
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">
+              <i class="bi bi-info-circle"></i> Giới thiệu
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="main-flex">
+    <!-- Music Card -->
+    <div class="music-card shadow animate__animated animate__fadeInUp">
+      <img src="/<%=result.path_img %>" alt="Poster" class="music-poster">
+      <div class="music-info">
+        <div class="music-title mb-2" id="songTitle"><%= result.name_song %></div>
+        <div class="music-author mb-3">author: <span id="songAuthor"><%= result.author %></span></div>
+        <div class="music-author mb-3">poster: <span id="songAuthor"><%= result.poster %></span></div>
+        <button class="play-btn mb-3" id="playPauseBtn">
+          <i class="fas fa-play" id="playIcon"></i>
+        </button>
+        <div class="visualizer-container">
+          <canvas id="visualizer"></canvas>
+        </div>
+        <div class="progress-container">
+          <span class="time" id="currentTime">0:00</span>
+          <div class="progress-bar">
+            <div class="progress-bar-inner" id="progressBar"></div>
+          </div>
+          <span class="time" id="duration">0:00</span>
+        </div>
+        <div class="music-id">ID: <span id="songId"><%= result.id_songs %></span></div>
+        <audio id="audioPlayer" src="/<%= result.path_file %>"></audio>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/script_listen.js"></script>
+</body>
+</html>
