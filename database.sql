@@ -1,0 +1,24 @@
+CREATE TABLE IF NOT EXISTS user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS songs (
+    id_songs BIGINT PRIMARY KEY,
+    name_song VARCHAR(255) NOT NULL,
+    song_eng VARCHAR(255) NOT NULL UNIQUE,
+    path_img VARCHAR(255) NOT NULL,
+    path_file VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    poster VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS history_heard (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_songs BIGINT NOT NULL,
+    id_user INT NOT NULL,
+    time_heard DATETIME NOT NULL,
+    FOREIGN KEY (id_songs) REFERENCES songs(id_songs) ON DELETE CASCADE,
+    FOREIGN KEY (id_user) REFERENCES user(id) ON DELETE CASCADE
+);

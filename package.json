@@ -1,22 +1,17 @@
 {
-  "name": "node_dev",
-  "version": "1.0.0",
-  "description": "quocanh",
-  "main": "index.js",
+  "name": "jimsu",
+  "version": "2.0.0",
+  "description": "Jimsu Music Streaming - Vue SPA & REST API",
   "scripts": {
-    "start": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "clean": "rm -rf backend public views index.mjs"
   },
   "author": "QuocAnh",
   "license": "ISC",
-  "dependencies": {
-    "dotenv": "^16.5.0",
-    "ejs": "^3.1.10",
-    "express": "^5.1.0",
-    "express-handlebars": "^8.0.3",
-    "express-session": "^1.18.1",
-    "morgan": "^1.10.0",
-    "multer": "^2.0.1",
-    "mysql2": "^3.14.1"
+  "devDependencies": {
+    "concurrently": "^9.1.2"
   }
 }
