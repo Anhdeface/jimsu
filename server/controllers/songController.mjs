@@ -47,6 +47,11 @@ export async function getSongById(id) {
     return null;
 }
 
+export async function getSongsByPoster(poster) {
+    const [rows] = await pool.query('SELECT * FROM songs WHERE poster = ? ORDER BY id_songs DESC', [poster]);
+    return rows;
+}
+
 export async function deleteSong(id) {
     const [result] = await pool.query('DELETE FROM songs WHERE id_songs = ?', [id]);
     return result.affectedRows > 0;

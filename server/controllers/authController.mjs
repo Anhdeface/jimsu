@@ -62,3 +62,29 @@ export async function checkUserExists(username) {
     const [rows] = await pool.query('SELECT id FROM user WHERE username = ?', [username]);
     return rows.length > 0;
 }
+
+// --------- Pass 2 / Security ---------
+
+export async function setPass2(userId, pass2) {
+    const hashed = await bcrypt.hash(pass2, SALT_ROUNDS);
+    const [result] = await pool.query('UPDATE user SET pass2 = ? WHERE id = ?', [hashed, userId]);
+    return result.affectedRows > 0;
+}
+
+export async function hasPass2(userId) {
+    const [rows] = await pool.query('SELECT pass2 FROM user WHERE id = ?', [userId]);
+    if (rows.length === 0) return false;
+    return rows[0].pass2 !== null;
+}
+
+export async function checkPass2(userId, pass2) {
+    const [rows] = await pool.query('SELECT pass2 FROM user WHERE id = ?', [userId]);
+    if (rows.length === 0 || !rows[0].pass2) return false;
+    return await bcrypt.compare(pass2, rows[0].pass2);
+}
+
+export async function checkPass1(userId, pass1) {
+    const [rows] = await pool.query('SELECT password FROM user WHERE id = ?', [userId]);
+    if (rows.length === 0) return false;
+    return await bcrypt.compare(pass1, rows[0].password);
+}

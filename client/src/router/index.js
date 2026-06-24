@@ -8,6 +8,8 @@ import AccountView from '@/views/AccountView.vue'
 import ListenView from '@/views/ListenView.vue'
 import UploadView from '@/views/UploadView.vue'
 import AboutView from '@/views/AboutView.vue'
+import SettingsView from '@/views/SettingsView.vue'
+import ManageUploadsView from '@/views/ManageUploadsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +18,8 @@ const router = createRouter({
     { path: '/login', component: LoginView, meta: { guest: true } },
     { path: '/register', component: RegisterView, meta: { guest: true } },
     { path: '/account', component: AccountView, meta: { requiresAuth: true } },
+    { path: '/account/settings', component: SettingsView, meta: { requiresAuth: true } },
+    { path: '/account/manage', component: ManageUploadsView, meta: { requiresAuth: true } },
     { path: '/listen/:slug', component: ListenView },
     { path: '/upload', component: UploadView, meta: { requiresAuth: true } },
     { path: '/about', component: AboutView }

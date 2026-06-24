@@ -9,6 +9,7 @@ const authStore = useAuthStore()
 
 const username = ref('')
 const password = ref('')
+const rememberMe = ref(false)
 
 const isFormValid = computed(() => {
   return username.value.trim().length > 0 && password.value.trim().length > 0
@@ -26,7 +27,7 @@ async function login() {
     const res = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user, pass })
+      body: JSON.stringify({ user, pass, rememberMe: rememberMe.value })
     })
 
     const data = await res.json()
@@ -83,9 +84,13 @@ async function login() {
           <label for="username">Tài khoản</label>
           <input type="text" v-model="username" @input="sanitizeUsername" id="username" class="form-control" maxlength="20" required placeholder="Nhập tài khoản" />
         </div>
-        <div class="mb-4">
+        <div class="mb-3">
           <label for="password">Mật khẩu</label>
           <input type="password" v-model="password" id="password" class="form-control" maxlength="35" required placeholder="Nhập mật khẩu" />
+        </div>
+        <div class="mb-4 form-check">
+          <input type="checkbox" class="form-check-input" id="rememberMe" v-model="rememberMe">
+          <label class="form-check-label" style="font-weight: 400; margin-left: 5px; color: var(--text-secondary);" for="rememberMe">Nhớ đăng nhập</label>
         </div>
         <button type="submit" class="btn btn-primary w-100" :disabled="!isFormValid">Login</button>
       </form>

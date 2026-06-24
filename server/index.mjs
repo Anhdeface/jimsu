@@ -12,11 +12,12 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
-import session from 'express-session';
+import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 
 import authRoutes from './routes/auth.mjs';
 import songRoutes from './routes/songs.mjs';
+import systemRoutes from './routes/system.mjs';
 
 // ---------- CONFIG -----------
 const app = express();
@@ -37,17 +38,8 @@ app.use(morgan('dev'));
 // Parse JSON body
 app.use(express.json());
 
-// Session
-app.use(session({
-    secret: 'quocanhmethuyduongvailon',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 3600000,
-        httpOnly: true,
-        sameSite: 'lax'
-    }
-}));
+// Cookie parser
+app.use(cookieParser());
 
 // Serve uploaded files (nhạc + ảnh bìa)
 app.use('/uploads', express.static(uploadsDir));
@@ -55,6 +47,7 @@ app.use('/uploads', express.static(uploadsDir));
 // ---------- API ROUTES -----------
 app.use('/api/auth', authRoutes);
 app.use('/api/songs', songRoutes);
+app.use('/api/system', systemRoutes);
 
 // ---------- PRODUCTION: Serve Vue build -----------
 const clientDist = path.join(__dirname, '../client/dist');

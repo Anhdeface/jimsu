@@ -9,6 +9,14 @@ const props = defineProps({
   isPlaying: {
     type: Boolean,
     default: false
+  },
+  colorStart: {
+    type: String,
+    default: '#ee0979'
+  },
+  colorEnd: {
+    type: String,
+    default: '#ff6a00'
   }
 })
 
@@ -77,8 +85,8 @@ function drawVisualizer() {
 
     const barHeight = (smoothBars[i] / 255) * canvas.offsetHeight
     const gradient = ctx.createLinearGradient(0, 0, 0, canvas.offsetHeight)
-    gradient.addColorStop(0, "#ee0979")
-    gradient.addColorStop(1, "#ff6a00")
+    gradient.addColorStop(0, props.colorStart)
+    gradient.addColorStop(1, props.colorEnd)
     
     ctx.fillStyle = gradient
     ctx.fillRect(x, canvas.offsetHeight - barHeight, barWidth, barHeight)

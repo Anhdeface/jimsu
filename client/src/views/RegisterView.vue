@@ -9,9 +9,12 @@ const authStore = useAuthStore()
 
 const username = ref('')
 const password = ref('')
+const confirmPassword = ref('')
 
 const isFormValid = computed(() => {
-  return username.value.trim().length > 0 && password.value.trim().length > 0
+  return username.value.trim().length > 0 && 
+         password.value.trim().length > 0 &&
+         password.value === confirmPassword.value
 })
 
 function sanitizeUsername() {
@@ -82,9 +85,14 @@ async function register() {
           <label for="username">Tài khoản</label>
           <input type="text" v-model="username" @input="sanitizeUsername" id="username" class="form-control" maxlength="20" required placeholder="Nhập tài khoản" />
         </div>
-        <div class="mb-4">
+        <div class="mb-3">
           <label for="password">Mật khẩu</label>
           <input type="password" v-model="password" id="password" class="form-control" maxlength="35" required placeholder="Nhập mật khẩu" />
+        </div>
+        <div class="mb-4">
+          <label for="confirmPassword">Nhập lại mật khẩu</label>
+          <input type="password" v-model="confirmPassword" id="confirmPassword" class="form-control" maxlength="35" required placeholder="Xác nhận mật khẩu" />
+          <small v-if="confirmPassword && password !== confirmPassword" class="text-danger mt-1 d-block" style="color: #ef4444;">Mật khẩu không khớp!</small>
         </div>
         <button type="submit" class="btn btn-primary w-100" :disabled="!isFormValid">Register</button>
       </form>

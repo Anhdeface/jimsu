@@ -10,6 +10,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import * as song from '../controllers/songController.mjs';
 import * as auth from '../controllers/authController.mjs';
@@ -97,7 +98,7 @@ router.post('/', requireAuth, upload.fields([
         return res.status(400).json({ success: false, message: 'Thiếu file audio hoặc ảnh bìa' });
     }
 
-    const user = await auth.getUserById(req.session.userId);
+    const user = await auth.getUserById(req.userId);
     const poster = user ? user.username : 'unknown';
 
     const result = await song.createSong(title.trim(), cover.filename, audio.filename, author.trim(), poster);
@@ -114,14 +115,56 @@ router.post('/:slug/listen', requireAuth, async (req, res) => {
     if (!result) {
         return res.status(404).json({ error: 'Bài hát không tồn tại' });
     }
-    await song.createHeard(req.session.userId, result.id_songs);
+    await song.createHeard(req.userId, result.id_songs);
     res.json({ success: true });
 });
 
 // Lịch sử nghe nhạc
 router.get('/history/me', requireAuth, async (req, res) => {
-    const history = await song.getHistory(req.session.userId);
+    const history = await song.getHistory(req.userId);
     res.json(history);
+});
+
+// Nhạc đã tải lên
+router.get('/my-uploads', requireAuth, async (req, res) => {
+    const user = await auth.getUserById(req.userId);
+    if (!user) return res.status(404).json({ error: 'User không tồn tại' });
+    
+    const uploads = await song.getSongsByPoster(user.username);
+    res.json(uploads);
+});
+
+// Xoá bài hát
+router.delete('/:id', requireAuth, async (req, res) => {
+    const { pass2 } = req.body;
+    
+    const hasP2 = await auth.hasPass2(req.userId);
+    if (!hasP2) return res.status(403).json({ success: false, message: 'Chưa cài mật khẩu cấp 2. Vui lòng vào Cài đặt để thiết lập.' });
+    if (!pass2) return res.status(400).json({ success: false, message: 'Cần nhập mật khẩu cấp 2 để xoá' });
+    
+    const isPass2Valid = await auth.checkPass2(req.userId, pass2);
+    if (!isPass2Valid) return res.status(401).json({ success: false, message: 'Mật khẩu cấp 2 không đúng' });
+
+    const targetSong = await song.getSongById(req.params.id);
+    if (!targetSong) return res.status(404).json({ success: false, message: 'Bài hát không tồn tại' });
+
+    const user = await auth.getUserById(req.userId);
+    if (targetSong.poster !== user.username) {
+        return res.status(403).json({ success: false, message: 'Bạn không có quyền xoá bài hát này' });
+    }
+
+    const success = await song.deleteSong(req.params.id);
+    if (success) {
+        try {
+            if (targetSong.path_img) fs.unlinkSync(path.join(uploadsDir, targetSong.path_img));
+            if (targetSong.path_file) fs.unlinkSync(path.join(uploadsDir, targetSong.path_file));
+        } catch (e) {
+            console.error('Không thể xoá file vật lý', e);
+        }
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false, message: 'Lỗi khi xoá bài hát' });
+    }
 });
 
 export default router;

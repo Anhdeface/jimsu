@@ -1,6 +1,6 @@
 {
   "name": "jimsu",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Jimsu Music Streaming - Vue SPA & REST API",
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",

@@ -18,17 +18,19 @@ const coverUrl = computed(() => {
 <template>
   <router-link :to="`/listen/${song.song_eng}`" class="song-card">
     <div class="song-card-inner">
-      <img :src="coverUrl" alt="Cover" class="song-img" />
+      <div class="song-img-wrapper">
+        <img :src="coverUrl" alt="Cover" class="song-img" loading="lazy" />
+        <div class="play-overlay">
+          <i class="bi bi-play-fill"></i>
+        </div>
+      </div>
       <div class="song-info">
         <h5 class="song-title">{{ song.name_song }}</h5>
         <div class="song-meta">
           <i class="bi bi-person-badge"></i> {{ song.author }}
         </div>
-        <div class="song-meta">
+        <div class="song-meta secondary">
           <i class="bi bi-person-circle"></i> {{ song.poster }}
-        </div>
-        <div class="song-meta small">
-          <i class="bi bi-caret-right-fill"></i> ID: {{ song.id_songs }}
         </div>
       </div>
     </div>
@@ -40,57 +42,111 @@ const coverUrl = computed(() => {
   display: block;
   text-decoration: none;
   color: inherit;
-  transition: transform 0.2s, box-shadow 0.2s;
   height: 100%;
-}
-
-.song-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
 .song-card-inner {
   display: flex;
-  background: white;
-  border-radius: 12px;
-  padding: 12px;
+  background: rgba(30, 27, 75, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(99, 102, 241, 0.12);
+  border-radius: 16px;
+  padding: 14px;
   gap: 16px;
   height: 100%;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  box-sizing: border-box;
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1),
+              border-color 0.25s cubic-bezier(0.25, 1, 0.5, 1),
+              box-shadow 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.song-card:hover .song-card-inner {
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15);
+}
+
+/* Image */
+.song-img-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .song-img {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+.song-card:hover .song-img {
+  transform: scale(1.08);
+}
+
+.play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.play-overlay i {
+  font-size: 1.8rem;
+  color: #fff;
+}
+
+.song-card:hover .play-overlay {
+  opacity: 1;
+}
+
+/* Info */
 .song-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 4px;
+  gap: 6px;
+  min-width: 0; /* Cho phép text truncate */
 }
 
 .song-title {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: #0d6efd;
+  color: #e2e8f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .song-meta {
-  font-size: 0.85rem;
-  color: #6c757d;
+  font-size: 0.82rem;
+  color: #94a3b8;
   display: flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.song-meta.small {
-  font-size: 0.75rem;
-  opacity: 0.8;
+.song-meta.secondary {
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
+/* Performance mode: tắt blur cho máy yếu */
+:global(.performance-mode) .song-card-inner,
+:global(.tier-low) .song-card-inner {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(30, 27, 75, 0.7);
 }
 </style>
